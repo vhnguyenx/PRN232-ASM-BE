@@ -20,7 +20,7 @@ namespace QE180082_Ass1_Product
                 options.AddPolicy("AllowReactApp",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
+                        policy.WithOrigins("https://prn-232-asm-fe.vercel.app/")
                               .AllowAnyHeader()
                               .AllowAnyMethod()
                               .AllowCredentials();
