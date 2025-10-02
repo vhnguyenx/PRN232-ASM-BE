@@ -63,7 +63,7 @@ namespace QE180082_Ass1_Product
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
-
+            app.UseCors("AllowFrontend");
             app.Run();
         }
     }
