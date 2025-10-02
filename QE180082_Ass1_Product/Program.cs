@@ -14,16 +14,18 @@ namespace QE180082_Ass1_Product
             // Add services to the container.
             builder.Services.AddControllers();
 
-            // Add CORS
+            // CORS policy
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowReactApp",
+                options.AddPolicy("AllowFrontend",
                     policy =>
                     {
-                        policy.WithOrigins("https://prn-232-asm-fe.vercel.app/")
-                              .AllowAnyHeader()
-                              .AllowAnyMethod()
-                              .AllowCredentials();
+                        policy.WithOrigins(
+                            "https://prn-232-asm-fe.vercel.app",
+                            "https://prn-232-asm-fe-git-master-youngits-projects.vercel.app"
+                        )
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                     });
             });
 
