@@ -123,7 +123,7 @@ namespace QE180082_Ass1_Product.Services
                     order.TotalAmount,
                     $"Order Product",
                     items,
-                    $"http://localhost:3000//cancel",
+                    $"https://prn-232-asm-fe.vercel.app/cancel",
                     $"https://prn-232-asm-fe.vercel.app/payos-success",
                     null, // signature
                     userProfile?.Email ?? "Valued Customer", // buyerName
@@ -152,41 +152,6 @@ namespace QE180082_Ass1_Product.Services
                 // Clear cart
                 await _cartRepository.ClearCartAsync(userId);
 
-
-                //// Create a temporary subscription payment record   
-                //var subcriptionPayment = new SubcriptionPaymentEntity
-                //{
-                //    SubcriptionId = Guid.NewGuid().ToString(),
-                //    UserId = userId,
-                //    Amount = plan.Price,
-                //    Currency = "VND",
-                //    PaymentMethod = "PayOS",
-                //    PaymentStatus = PaymentStatusEnum.PENDING,
-                //    TransactionReference = $"SUB-{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}",
-                //    ExpiryDate = DateTime.UtcNow.AddMonths(1),
-                //    InvoiceUrl = null,
-                //    Note = $"Payment for plan {plan.Name}",
-                //    OrderCode = payOSResponse.orderCode,
-                //};
-
-                //await paymentRepository.CreatePaymentAsync(subcriptionPayment);
-
-                //var userSubcription = new UserSubcriptionEntity
-                //{
-                //    SubcriptionId = subcriptionPayment.SubcriptionId,
-                //    UserId = userId,
-                //    PlanId = plan.PlanId,
-                //    IsActive = false, // Will be activated upon successful payment
-                //    CreatedDate = DateTime.UtcNow,
-                //    UpdatedDate = DateTime.UtcNow
-                //};
-
-                //await paymentRepository.CreateUserSubscriptionsAsync(userSubcription);
-
-                //await paymentRepository.SaveChangesAsync();
-
-                //   await transaction.CommitAsync();
-
                 return paymentResponse;
             }
             catch (Exception ex)
@@ -196,117 +161,6 @@ namespace QE180082_Ass1_Product.Services
             }
         }
 
-        //public bool HandleWebhookFromPayOSAsync(WebhookType payload)
-        //{
-        //    var transaction = applicationDbContext.Database.BeginTransaction();
-        //    try
-        //    {
-        //        //WebhookData paymentData = payOS.verifyPaymentWebhookData(payload);
-        //        //var currentPayment = paymentRepository.GetPaymentByOrderAsync(payload.data.orderCode);
-        //        //var userSubcription = paymentRepository.GetUserSubcriptionBySubciptionId(currentPayment!.SubcriptionId!);
-
-        //        bool validFlag = false;
-
-        //        var expiryDateBaseOnPlan = DateTime.UtcNow;
-
-        //        //if (createPaymentRequest.planId == 1)
-        //        //{
-        //        //    expiryDateBaseOnPlan = expiryDateBaseOnPlan.AddMonths(1);
-        //        //}
-        //        //else if (createPaymentRequest.planId == 2)
-        //        //{
-        //        //    expiryDateBaseOnPlan = expiryDateBaseOnPlan.AddMonths(12);
-        //        //}
-        //        //else if (createPaymentRequest.planId == 3)
-        //        //{
-        //        //    expiryDateBaseOnPlan = expiryDateBaseOnPlan.AddYears(50);
-        //        //}
-
-        //        //if (paymentData.desc == "success")
-        //        //{
-        //        //    //Update payment status to COMPLETED
-        //        //    currentPayment!.PaymentStatus = PaymentStatusEnum.COMPLETED;
-        //        //    currentPayment.PaymentDate = DateTime.UtcNow;
-        //        //    paymentRepository.UpdatePayment(currentPayment);
-
-        //        //    //Activate user subscription
-        //        //    userSubcription!.IsActive = true;
-        //        //    userSubcription.StartDate = DateTime.UtcNow;
-        //        //    userSubcription.EndDate = DateTime.UtcNow.AddMonths(1);
-        //        //    paymentRepository.UpdateUserSubscription(userSubcription);
-
-        //        //    //paymentRepository.SaveChangesAsync();
-        //        //    applicationDbContext.SaveChanges();
-        //        //    payOSHubContext.Clients.User(userSubcription.UserId!).SendAsync("ReceivePaymentStatus", new
-        //        //    {
-        //        //        OrderCode = currentPayment.OrderCode,
-        //        //        PaymentStatus = currentPayment.PaymentStatus.ToString(),
-        //        //        PaymentDate = currentPayment.PaymentDate,
-        //        //        ExpiryDate = userSubcription.EndDate,
-        //        //    });
-
-        //        //    validFlag = true;
-        //        //}
-        //        //else
-        //        //{
-        //        //    //Update payment status to FAILED
-        //        //    currentPayment!.PaymentStatus = PaymentStatusEnum.FAILED;
-        //        //    currentPayment.PaymentDate = DateTime.UtcNow;
-        //        //    paymentRepository.UpdatePayment(currentPayment);
-
-        //        //    //  paymentRepository.SaveChangesAsync();
-        //        //    applicationDbContext.SaveChanges();
-        //        //    validFlag = false;
-        //        //}
-
-        //        transaction.Commit();
-
-        //        return validFlag;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        transaction.Rollback();
-        //        return false;
-        //    }
-        //}
-
-
-        //public async Task<IActionResult> CancelPaymentAsync(CancelPaymentRequest cancelPaymentRequest)
-        //{
-        //    var transaction = applicationDbContext.Database.BeginTransaction();
-        //    try
-        //    {
-        //        var currentPayment = paymentRepository.GetPaymentByOrderAsync(cancelPaymentRequest.OrderCode);
-
-        //        if (currentPayment == null)
-        //        {
-        //            return ResponseExtension.NotFound("Payment not found!");
-        //        }
-
-        //        PaymentLinkInformation cancelledPaymentLinkInfo = await payOS.cancelPaymentLink(cancelPaymentRequest.OrderCode, "User cancel payment.");
-
-        //        //Update payment status to CANCELLED
-        //        if (cancelledPaymentLinkInfo.status == "CANCELLED")
-        //        {
-        //            currentPayment!.PaymentStatus = PaymentStatusEnum.CANCEL;
-        //            currentPayment.PaymentDate = DateTime.UtcNow;
-        //            paymentRepository.UpdatePayment(currentPayment);
-        //            await paymentRepository.SaveChangesAsync();
-        //            await transaction.CommitAsync();
-        //        }
-        //        else
-        //        {
-        //            ResponseExtension.BadRequest("An error occur with third-party payment system!");
-        //        }
-
-        //        return ResponseExtension.OkWithData("Canceled payment successfully!");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await transaction.RollbackAsync();
-        //        return ResponseExtension.InternalServerError("An error occure while cancel payment :" + ex.Message);
-        //    }
-        //}
-
+  
     }
 }
