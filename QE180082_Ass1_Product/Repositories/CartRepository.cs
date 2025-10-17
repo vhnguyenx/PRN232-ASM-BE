@@ -43,7 +43,7 @@ namespace QE180082_Ass1_Product.Repositories
 
         public async Task<CartItemEntity> UpdateCartItemAsync(CartItemEntity cartItem)
         {
-            cartItem.UpdatedAt = DateTime.UtcNow;
+         //   cartItem.UpdatedAt = DateTime.UtcNow;
             _context.CartItems.Update(cartItem);
             await _context.SaveChangesAsync();
             return cartItem;

@@ -118,6 +118,14 @@ namespace QE180082_Ass1_Product.Services
             //}
 
             cartItem.Quantity = request.Quantity;
+
+            if (cartItem.UpdatedAt.Kind == DateTimeKind.Unspecified || cartItem.CreatedAt.Kind == DateTimeKind.Unspecified)
+            {
+                cartItem.UpdatedAt = DateTime.SpecifyKind(cartItem.UpdatedAt, DateTimeKind.Utc);
+                cartItem.CreatedAt = DateTime.SpecifyKind(cartItem.CreatedAt, DateTimeKind.Utc);
+            }
+
+
             cartItem = await _cartRepository.UpdateCartItemAsync(cartItem);
 
             return new CartItemResponse
