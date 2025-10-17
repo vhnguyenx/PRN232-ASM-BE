@@ -9,12 +9,14 @@ namespace QE180082_Ass1_Product.Services
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IAuthService _authService;
 
-        public OrderService(IOrderRepository orderRepository, ICartRepository cartRepository, IProductRepository productRepository)
+        public OrderService(IOrderRepository orderRepository, ICartRepository cartRepository, IProductRepository productRepository, IAuthService authService)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _productRepository = productRepository;
+            _authService = authService;
         }
 
         public async Task<OrderResponse> CreateOrderAsync(int userId, CreateOrderRequest request)
@@ -27,7 +29,7 @@ namespace QE180082_Ass1_Product.Services
             }
 
             // Calculate total and validate stock
-            decimal totalAmount = 0;
+            int totalAmount = 0;
             var orderItems = new List<OrderItemEntity>();
 
             foreach (var cartItem in cartItems)
@@ -119,6 +121,13 @@ namespace QE180082_Ass1_Product.Services
             }
 
             order.PaymentStatus = request.PaymentStatus;
+
+            // Ensure CreatedAt is UTC
+            if (order.CreatedAt.Kind == DateTimeKind.Unspecified)
+            {
+                order.CreatedAt = DateTime.SpecifyKind(order.CreatedAt, DateTimeKind.Utc);
+            }
+
             order = await _orderRepository.UpdateAsync(order);
 
             return MapToOrderResponse(order);

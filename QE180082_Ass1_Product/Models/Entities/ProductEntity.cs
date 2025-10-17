@@ -17,7 +17,7 @@ namespace QE180082_Ass1_Product.Models.Entities
         public required string Description { get; set; }
         
         [Column("price")]
-        public required decimal Price { get; set; }
+        public required int Price { get; set; }
         
         [Column("image")]
         public string? Image { get; set; }

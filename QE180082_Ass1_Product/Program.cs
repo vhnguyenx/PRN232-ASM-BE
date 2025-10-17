@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Net.payOS;
 using QE180082_Ass1_Product.Repositories;
 using QE180082_Ass1_Product.Services;
 using System.Text;
@@ -71,6 +72,7 @@ namespace QE180082_Ass1_Product
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<PaymentService>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -103,6 +105,19 @@ namespace QE180082_Ass1_Product
                     }
                 });
             });
+
+            // ===================== PayOS Configuration =====================
+            builder.Services.AddSingleton<PayOS>(sp =>
+            {
+                var config = builder.Configuration.GetSection("PayOS");
+                return new PayOS(
+                    config["ClientId"],
+                    config["ApiKey"],
+                    config["ChecksumKey"]
+                );
+            });
+
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 

@@ -14,7 +14,7 @@ namespace QE180082_Ass1_Product.Models.Entities
         public int UserId { get; set; }
         
         [Column("total_amount")]
-        public decimal TotalAmount { get; set; }
+        public int TotalAmount { get; set; }
         
         [Column("status")]
         public required string Status { get; set; }

@@ -14,7 +14,7 @@ namespace QE180082_Ass1_Product.Models.DTO
         
         [Required(ErrorMessage = "Price is required")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
-        public required decimal Price { get; set; }
+        public required int Price { get; set; }
 
         [Url(ErrorMessage = "Image must be a valid URL")]
         [StringLength(500, ErrorMessage = "Image URL cannot exceed 500 characters")]
