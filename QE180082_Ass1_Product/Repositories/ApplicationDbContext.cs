@@ -83,7 +83,7 @@ namespace QE180082_Ass1_Product.Repositories
                 entity.Property(e => e.Phone).HasMaxLength(20);
                 entity.Property(e => e.Notes).HasMaxLength(1000);
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                //entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 // Foreign key relationship
                 entity.HasOne(e => e.User)

@@ -40,7 +40,7 @@ namespace QE180082_Ass1_Product.Repositories
 
         public async Task<OrderEntity> UpdateAsync(OrderEntity order)
         {
-            order.UpdatedAt = DateTime.UtcNow;
+           // order.UpdatedAt = DateTime.UtcNow;
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
             return order;
