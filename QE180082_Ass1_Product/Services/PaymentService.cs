@@ -124,7 +124,7 @@ namespace QE180082_Ass1_Product.Services
                     $"Order Product",
                     items,
                     $"http://localhost:3000//cancel",
-                    $"http://localhost:3000//payos-success",
+                    $"https://prn-232-asm-fe.vercel.app/payos-success",
                     null, // signature
                     userProfile?.Email ?? "Valued Customer", // buyerName
                     userProfile?.Email, // buyerEmail
